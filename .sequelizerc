@@ -1,0 +1,10 @@
+//as the directories were moved from the root, this code inform sequelize about the actual paths
+
+const path = require('path');
+
+module.exports = {
+	'config': path.resolve('./api/config', 'config.json'),
+	'models-path': path.resolve('./api/models'),
+	'seeders-path': path.resolve('./api/seeders'),
+	'migrations-path': path.resolve('./api/migrations')
+};
