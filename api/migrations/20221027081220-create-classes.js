@@ -9,17 +9,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
 	  teacher_id: {
-		  allowNull: false,
-		  type: Sequelize.INTEGER,
-		  references: { model: 'Individuals', key: 'id' }
-	  },
-	  data_start: {
-	  	  type: Sequelize.DATEONLY
-	  },
-	  nivel_id: {
 		allowNull: false,
 		type: Sequelize.INTEGER,
-		references: { model: 'Nivels', key: 'id' }
+		references: { model: 'People', key: 'id' }
+	  },
+      date_start: {
+        type: Sequelize.DATEONLY
+      },
+	  level_id: {
+		allowNull: false,
+		type: Sequelize.INTEGER,
+		references: { model: 'Levels', key: 'id' }
 	  },
       createdAt: {
         allowNull: false,
