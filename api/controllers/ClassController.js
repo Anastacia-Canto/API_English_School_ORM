@@ -48,7 +48,7 @@ class ClassController{
 	static async deleteClass(req, res){
 		const { id } = req.params;
 		try{
-			const oneClass = await database.Class.findOne({ where: { id: Number(id) } });
+			const oneClass = await database.Classes.findOne({ where: { id: Number(id) } });
 			if (oneClass){
 				await database.Classes.destroy({where: { id: Number(id) } });
 				return res.status(201).json({message: `Id ${id} deleted.`});
@@ -58,6 +58,16 @@ class ClassController{
 		} catch (err){
 			return res.status(500).json(err.message);
 		};
+	};
+
+	static async restoreClass(req, res){
+		const { id } = req.params;
+		try {
+			await database.Classes.restore( {where: { id: Number(id) } } );
+			return res.status(200).json({ message: `id ${id} restored!`});
+		  } catch (err) {
+			return res.status(500).json(error.message);
+		  };
 	};
 };
 

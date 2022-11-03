@@ -10,6 +10,7 @@ ORMs isolate data relational layer from the rest of application, offering a uniq
 ORMs can translate a programming language to SQL language, making easier to manipulate databases, independently of which 
 database is being used. It is even possible to change the database without changing the code itself. So it's easier to 
 mantain. 
+Another important aspect of ORMs is the possibility to control changes on database through migrations. Every change is passed to database by migrations that are indexed. So you can undo some change using the log registered on a specific table (SequelizeMeta, in this case).
 
  - Project characteristics
 

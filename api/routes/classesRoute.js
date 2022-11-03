@@ -4,11 +4,12 @@ const ClassController = require('../controllers/ClassController');
 const router = Router();
 
 router
-	.get('/Classes', ClassController.listClasses)
-	.get('/Classes/:id', ClassController.listById)
-	.post('/Classes', ClassController.createClass)
-	.put('/Classes/:id', ClassController.updateClass)
-	.delete('/Classes/:id', ClassController.deleteClass);
+	.get('/classes', ClassController.listClasses)
+	.get('/classes/:id', ClassController.listById)
+	.post('/classes/:id/restore', ClassController.restoreClass)
+	.post('/classes', ClassController.createClass)
+	.put('/classes/:id', ClassController.updateClass)
+	.delete('/classes/:id', ClassController.deleteClass);
 
 
 

@@ -61,6 +61,16 @@ class PeopleController {
 		};
 	};
 
+	static async restorePerson(req, res){
+		const { id } = req.params;
+		try{
+			await database.People.restore( { where: { id: Number(id) } });
+			return res.status(200).json({ message: `id ${id} restored!`});
+		} catch (err){
+			return res.status(500).json(err.message);
+		};
+	};
+
 	// CRUD for Registrations
 
 	static async listByRegistration(req, res){
@@ -148,6 +158,21 @@ class PeopleController {
 			} else {
 				return res.status(400).send({message: 'Empty position.'});
 			}
+		} catch (err){
+			return res.status(500).json(err.message);
+		};
+	};
+
+	static async restoreRegistration(req, res){
+		const { studentId, registrationId } = req.params;
+		try{
+			await database.Registrations.restore({ 
+				where: { 
+					id: Number(registrationId), 
+					student_id: Number(studentId)
+				} 
+			});
+			return res.status(200).json({ message: `id ${registrationId} restored!`});
 		} catch (err){
 			return res.status(500).json(err.message);
 		};
