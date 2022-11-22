@@ -1,11 +1,23 @@
 const database = require('../models');
+const Sequelize = require('sequelize');
+
 
 class PeopleController {
+
+	static async listActivePeople(req, res){
+		try {
+			//findAll() is a sequelize method that converts to the query SELECT * ...
+			const activePeople = await database.People.findAll();
+			return res.status(200).json(activePeople);
+		} catch (err) {
+			return res.status(500).json(err.message);
+		};
+	};
 
 	static async listPeople(req, res){
 		try {
 			//findAll() is a sequelize method that converts to the query SELECT * ...
-			const people = await database.People.findAll();
+			const people = await database.People.scope('all').findAll();
 			return res.status(200).json(people);
 		} catch (err) {
 			return res.status(500).json(err.message);
@@ -104,13 +116,54 @@ class PeopleController {
 	static async listRegistrationsByStudent(req, res){
 		const { studentId } = req.params;
 		try{
-			const registrations = await database.Registrations.findAll({
+			const person = await database.People.findOne({
 				where: {
-					student_id: Number(studentId)
+					id: Number(studentId)
 				}
 			});
-			if (Object.keys(registrations).length == 0) return res.status(404).send({message: 'There are no registrations to this student.'});
-			else return res.status(200).json(registrations);
+			
+			// the method getRegisteredClasses is created automatically by Sequelize
+			const registrations = await person.getRegisteredClasses();
+			return res.status(200).json(registrations);
+			
+			
+		} catch (err){
+			return res.status(500).json(err.message);
+		};
+	};
+
+	static async listRegistrationsByClass(req, res){
+		const { classId } = req.params;
+		try{
+			const registrations = await database.Registrations.findAndCountAll({
+				where: {
+					class_id: Number(classId),
+					status: 'active'
+				},
+				limit: 20,
+				order: [['student_id', 'ASC']]
+			});
+			return res.status(200).json(registrations);
+			
+			
+		} catch (err){
+			return res.status(500).json(err.message);
+		};
+	};
+
+	static async listCrowdedClasses(req, res){
+		const classLimit = 2;
+
+		try{
+			const crowdedClasses = await database.Registrations.findAndCountAll({
+				where: {
+					status: 'active'
+				},
+				attributes: ['class_id'],
+				group: ['class_id'],
+				having: Sequelize.literal(`count(class_id) >= ${classLimit}`)
+			});
+			return res.status(200).json(crowdedClasses.count);
 			
 		} catch (err){
 			return res.status(500).json(err.message);

@@ -4,8 +4,11 @@ const PeopleController = require('../controllers/PeopleController');
 const router = Router();
 
 router
-	.get('/people', PeopleController.listPeople)
+	.get('/people', PeopleController.listActivePeople)
+	.get('/people/all', PeopleController.listPeople)
 	.get('/people/:studentId/registrations/:registrationId', PeopleController.listByRegistration)
+	.get('/people/registrations/:classId/active', PeopleController.listRegistrationsByClass)
+	.get('/people/registrations/crowded', PeopleController.listCrowdedClasses)
 	.get('/people/:studentId/registrations', PeopleController.listRegistrationsByStudent)
 	.get('/people/:id', PeopleController.listById)
 	.post('/people/:studentId/registrations', PeopleController.createRegistration)
